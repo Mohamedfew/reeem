@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIN Furniture | فخامة الأثاث</title>
+    <style>
+        :root {
+            --primary-gold: #f1c40f;
+            --bg-dark: #0f1a1d; 
+            --accent-gold: #d4af37;
+            --text-light: #ecf0f1;
+            --card-hover: rgba(241, 196, 15, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* كلمة FIN الثابتة كعلامة تجارية */
+        .brand-name {
+            position: fixed;
+            top: 30px;
+            right: 50px;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-gold);
+            z-index: 1000;
+            letter-spacing: 8px;
+            text-shadow: 0 0 30px rgba(241, 196, 15, 0.4);
+            pointer-events: none; /* تجعل الكلمة خلفية لا تعيق الضغط */
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            background: linear-gradient(rgba(15, 26, 29, 0.5), rgba(15, 26, 29, 0.9)), 
+                        url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1600');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* تأثير بارالاكس بسيط */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
+            margin: 0;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 15px;
+            animation: fadeInDown 1.2s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            color: var(--primary-gold);
+            margin-top: 20px;
+            max-width: 700px;
+            line-height: 1.8;
+            animation: fadeInUp 1.5s ease-out forwards;
+        }
+
+        /* News Section Container */
+        .container {
+            max-width: 1400px;
+            margin: -120px auto 0; 
+            padding: 0 40px 100px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        /* Card Style */
+        .news-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .news-card:hover {
+            transform: translateY(-15px);
+            border-color: var(--primary-gold);
+            background: var(--card-hover);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        .img-wrapper {
+            height: 240px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1s ease;
+        }
+
+        .news-card:hover .img-wrapper img {
+            transform: scale(1.15);
+        }
+
+        .img-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(transparent, rgba(15, 26, 29, 0.8));
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .card-body h3 {
+            margin: 0 0 15px;
+            font-size: 1.3rem;
+            color: var(--primary-gold);
+            font-weight: 600;
+        }
+
+        .card-body p {
+            font-size: 0.95rem;
+            color: #bdc3c7;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--primary-gold); border-radius: 5px; }
+
+        @media (max-width: 768px) {
+            .brand-name { font-size: 1.8rem; right: 20px; }
+            .container { margin-top: -50px; padding: 0 20px 50px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="brand-name">FIN</div>
+
+    <section class="hero">
+        <h1>فخامة بلا حدود</h1>
+        <p>مجموعتنا الحصرية لعام 2026 تجسد التناغم بين الفن الهندسي وراحة المنزل.</p>
+    </section>
+
+    <div class="container">
+        <div class="news-grid" id="mainGrid"></div>
+    </div>
+
+    <script>
+        const newsItems = [
+            { t: "إصدار الزمرد", d: "تشكيلة غرف نوم بلمسات مخملية خضراء فخمة تدعو للاسترخاء.", img: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=800" },
+            { t: "مودرن كلاسيك", d: "دمج بين عراقة الماضي وبساطة المستقبل في صالونات مذهلة.", img: "https://images.unsplash.com/photo-1519947486511-46149fa0a254?q=80&w=800" },
+            { t: "إضاءة كريستال", d: "نجفات يدوية الصنع تضفي سحراً وبريقاً خاصاً على أركان منزلك.", img: "https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?q=80&w=800" },
+            { t: "كنب الزاوية", d: "استغلال مثالي للمساحات مع راحة لا تضاهى وتصاميم انسيابية.", img: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?q=80&w=800" },
+            { t: "المكاتب التنفيذية", d: "بيئة عمل منزلية مريحة تعزز من إنتاجيتك وإبداعك اليومي.", img: "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?q=80&w=800" },
+            { t: "مفروشات الحرير", d: "ستائر وسجاد من أجود أنواع الخيوط الحريرية العالمية.", img: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?q=80&w=800" },
+            { t: "طاولات القهوة", d: "قطع فنية من الزجاج المقسى والقواعد المعدنية الصلبة.", img: "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?q=80&w=800" },
+            { t: "أثاث الفنادق", d: "خط إنتاج خاص يوفر تجربة الفخامة الفندقية في قلب بيتك.", img: "https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=800" },
+            { t: "التصنيع اليدوي", d: "نحن نفخر بمهارة الحرفيين لدينا الذين يصنعون التحف يدوياً.", img: "https://images.unsplash.com/photo-1532323544230-7191fd51bc1b?q=80&w=800" },
+            { t: "الجلود الطبيعية", d: "كراسي استرخاء من الجلد الفاخر الذي يزداد جمالاً بمرور الوقت.", img: "https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=800" },
+            { t: "مداخل البيوت", d: "كونسول فخم يعطي الانطباع الأول المثالي لكل من يزورك.", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=800" },
+            { t: "الاستدامة في FIN", d: "نلتزم باستخدام أخشاب مستدامة للحفاظ على كوكبنا وجماله.", img: "https://images.unsplash.com/photo-1490682143684-14369e18dce8?q=80&w=800" },
+{ t: "المكتبات المنزلية", d: "نظم مجموعتك من الكتب في مكتبة خشبية فخمة تمتد من الأرض للسقف.", img: "https://images.unsplash.com/photo-1594620302200-9a762244a156?q=80&w=800" },
+{ t: "كنب المخمل", d: "أناقة لا تنتهي مع قماش المخمل الناعم بألوانه الدافئة والجذابة.", img: "https://images.unsplash.com/photo-1549187774-b4e9b0445b41?q=80&w=800" },
+{ t: "طاولات جانبية", d: "طاولات صغيرة بتصاميم فريدة تكمل أناقة ركن القراءة الخاص بك.", img: "https://images.unsplash.com/photo-1532372320572-cda25653a26d?q=80&w=800" },
+{ t: "أبواب الخشب الصلب", d: "مداخل تمنحك الأمان والفخامة منذ اللحظة الأولى لدخولك المنزل.", img: "https://images.unsplash.com/photo-1481277542470-605612bd2d61?q=80&w=800" },
+{ t: "ركن المدفأة", d: "صمم منطقة دافئة حول المدفأة بقطع أثاث توفر أقصى درجات الراحة.", img: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=800" },
+{ t: "خزائن المشروبات", d: "تصاميم مبتكرة لحفظ المشروبات وأدوات التقديم بأسلوب عصري.", img: "https://images.unsplash.com/photo-1563298723-dcfebaa392e3?q=80&w=800" },
+{ t: "الأسرة العصرية", d: "أسرة بتصاميم منخفضة ومبطنة بالكامل لتجربة نوم استثنائية.", img: "https://images.unsplash.com/photo-1505693314120-0d443867891c?q=80&w=800" },
+{ t: "ستائر التعتيم", d: "ستائر فخمة توفر الخصوصية التامة وتتحكم في الإضاءة بذكاء.", img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=800" },
+{ t: "أرائك الاسترخاء", d: "كراسي 'تشيز لونج' مصممة لتكون ملاذك الخاص بعد يوم عمل طويل.", img: "https://images.unsplash.com/photo-1519961655809-34fa156820ff?q=80&w=800" },
+{ t: "السجاد اليدوي", d: "قطع فنية أرضية تربط عناصر الغرفة ببعضها البعض بنسيج فاخر.", img: "https://images.unsplash.com/photo-1575414003591-ece8d0416c7a?q=80&w=800" }
+        ];
+
+        const grid = document.getElementById('mainGrid');
+        
+        newsItems.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'news-card';
+            card.innerHTML = `
+                <div class="img-wrapper">
+                    <img src="${item.img}" alt="${item.t}" loading="lazy">
+                </div>
+                <div class="card-body">
+                    <h3>${item.t}</h3>
+                    <p>${item.d}</p>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+</html>

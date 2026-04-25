@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIN أثاث</title>
+    <link rel="icon" href="images/logo.png">
+    <!-- Including Tailwind CSS for styling the website -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- css style -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- google links -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body>
+    <!-- header section -->
+    <section class="bg-[#35736E]">
+        <header class="px-[5%] md:px-[2%] flex justify-between h-[80px] items-center">
+            <!-- header logo  -->
+            <div>
+                <img src="images/logo.png" alt="FIN logo" class="w-[40px] sm:w-[50px]">
+            </div>
+            <!-- header link section -->
+            <div class="text-white flex justify-between items-center">
+                <ul class="hidden sm:flex gap-4 md:gap-5 mr-10 md:mr-20">
+                    <li><a href="index.html" class="border-b-4 border-[#FFD748] font-light">الصفحه الرئيسيه</a></li>
+                     <li><a href="login.html" class="hover:border-b-2 border-[#FFD748] font-light">تسجيل دخول</a></li>
+                      <li><a href="Register.html" class="hover:border-b-2 border-[#FFD748] font-light">إنشاء حساب</a></li>
+                    <li><a href="About.html" class="hover:border-b-2 border-[#FFD748] font-light"> من نحن</a></li>
+                    <li><a href="Blog.html" class="hover:border-b-2 border-[#FFD748] font-light">المدونة</a></li>
+                    <li><a href="Blog.html" class="hover:border-b-2 border-[#FFD748] font-light">اللغةالانجليزية</a></li>
+                </ul>
+            </div>
+        </header>
+    </section>
+
+     <!-- service section -->
+    <section class="mb-20" id="services">
+        <section>
+            <div class="wrapper lg:flex justify-between items-center">
+                <div
+                    class="sm:grid sm:grid-cols-2 lg:grid-cols-1 justify-center items-center lg:justify-end lg:w-[60%] lg:mr-10">
+                    <div class="text-center sm:text-start my-10 lg:hidden col-span-1 order-first sm:order-last">
+                        <h1 class="text-[24px] font-bold mb-3 text-[#2F2F2F]">نحن نساعدك على صنع <br>التصميم الداخلي 
+                            الحديث</h1>
+                        <p class="text-[12px] text-[#6A6A6A]  overflow-hidden h-[50%]">ارتقِ بمساحات معيشتك
+                            مع
+                            خبرتنا في التصميم الداخلي العصري. من البساطة الأنيقة إلى التصاميم المعاصرة 
+                            الجريئة
+                            نُصمّم تصاميم شخصية تُناسب ذوقك.نُبدع تصاميم مُخصصة تُناسب أسلوبك.</p>
+                    </div>
+                    <!-- service section images -->
+                    <div
+                        class="relative h-auto mb-10 lg:my-20 flex lg:w-[90%] col-span-1 order-last sm:order-first lg:justify-self-end">
+                        <img src="images/help-3.png" alt="img"
+                            class="w-[60%]  transform hover:scale-105 transition duration-1000 ease-in-out">
+                        <img src="images/help-2.png" alt="img"
+                            class="ml-2 w-[25%] h-[34%]  transform hover:scale-105 transition duration-1000 ease-in-out">
+                        <img src="images/help-1.png" alt="img"
+                            class="absolute right-5 top-[38%] w-[43%]  transform hover:scale-105 transition duration-1000 ease-in-out">
+                    </div>
+                </div>
+                <!-- content section -->
+                <div class="lg:w-[40%]">
+                    <div class="text-center md:text-start py-10 hidden lg:block">
+                        <h1 class="text-[24px] font-bold mb-5 text-[#2F2F2F]">نحن نساعدك على صنع <br>  التصميم الداخلي
+                            الحديث</h1>
+                        <p class="text-[12px] text-[#6A6A6A]">انطلق في رحلة تصميم داخلي عصري بمساعدة خبرائنا.
+                            من وضع التصورات إلى التنفيذ، نحن هنا لنضفي لمسة من 
+                            الأناقة المعاصرة على مساحة معيشتك بسلاسة.</p>
+                    </div>
+                    <!-- contents points -->
+                    <div class="max-sm:mt-14">
+                        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5  text-[#6A6A6A]">
+                            <li class="text-[12px] flex"><span
+                                    class="material-symbols-outlined text-[16px] text-[#35736E] font-bold mr-3 mt-0.5 ">fiber_manual_record</span>يقدم
+                                فريقنا
+              إرشادات شخصية لفهم أسلوبك وتفضيلاتك واحتياجاتك
+                               للحصول على
+                               تصميم داخلي عصري مصمم خصيصًا لك.</li>
+                            <li class="text-[12px] flex"><span
+                                    class="material-symbols-outlined text-[16px] text-[#35736E] font-bold mr-3 mt-0.5 ">fiber_manual_record</span>باستخدام
+                                أحدث الاتجاهات والتقنيات، نبتكر مفاهيم تصميمية مبتكرة للارتقاءe
+                                بمساحتك
+                                بأسلوب عصري.</li>
+                            <li class="text-[12px] flex"><span
+                                    class="material-symbols-outlined text-[16px] text-[#35736E] font-bold mr-3 mt-0.5 ">fiber_manual_record</span>من
+                                اختيار الأثاث إلى لمسات الديكور، نولي الأولوية للمواد
+                                عالية الجودة 
+                               والحرفية المتقنة لضمان جمال ووظائف تدوم طويلاً.</li>
+                            <li class="text-[12px] flex"><span
+                                    class="material-symbols-outlined text-[16px] text-[#35736E] font-bold mr-3 mt-0.5 ">fiber_manual_record</span>استمتع
+                                بدعم شامل من التخطيط الأولي إلى التنفيذ النهائي، مما يضمن
+                               تجربة سلسة
+                               وخالية من التوتر.</li>
+                        </ul>
+                        <!-- explore  button for service section -->
+                        <div class="flex justify-center sm:justify-start">
+                            <a href="#"
+                                class=" bg-[#35736E] hover:bg-[#FFD748] hover:text-black text-white rounded-full px-5 py-1 font-light  transform  transition duration-500 ease-in-out">استكشف</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+   <!-- chaires section -->
+    <section class="mb-20 min-[375px]:mt-36">
+        <section class="wrapper">
+            <div class="grid grid-cols-1 gap-10 md:grid-cols-2  min-[1150px]:grid-cols-3 justify-between">
+                <!-- Modern Chair -->
+                <div
+                    class="flex max-[375px]:flex-col max-[375px]:items-center  max-[375px]:text-center items-start gap-5 col-span-1">
+                    <div>
+                        <div
+                            class="my-10 relative min-[375px]:mt-0  bg-[#B6CACB]  flex justify-center  rounded-xl  w-[110px] h-[100px]">
+                            <img src="images/product-1.png" alt="images"
+                                class="absolute bottom-0 w-[95px]  transform hover:scale-105 transition duration-1000 ease-in-out">
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="font-semibold text-[#2F2F2F]">كرسي حديث</h2>
+                        <p class="text-[14px] text-[#6A6A6A]">كتشف حلول جلوس أنيقة ومبتكرة في مجموعتنا من الكراسي العصرية.
+                           مجموعة الكراسي العصرية.</p>
+                    </div>
+                </div>
+                <!-- Kruzi Aero -->
+                <div
+                    class="flex max-[375px]:flex-col max-[375px]:items-center  max-[375px]:text-center items-start gap-5 col-span-1">
+                    <div>
+                        <div
+                            class="my-10 min-[375px]:mt-0  bg-[#B6CACB]  flex justify-center  rounded-xl  w-[110px] h-[100px]">
+                            <img src="images/product-2.png" alt="images"
+                                class="absolute bottom- w-[120px] -mt-6 ml-3 transform hover:scale-105 transition duration-1000 ease-in-out">
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="font-semibold text-[#2F2F2F]">كروزي ايرو</h2>
+                        <p class="text-[14px] text-[#6A6A6A]">استمتع براحة مستقبلية مع 
+                            مجموعة مقاعد كروزي آيرو</p>
+                    </div>
+                </div>
+                <!-- Ergonomic Chair -->
+                <div
+                    class="flex max-[375px]:flex-col max-[375px]:items-center max-[375px]:text-center items-start gap-5 col-span-1">
+                    <div>
+                        <div
+                            class="my-10 relative min-[375px]:mt-0  bg-[#B6CACB]  flex justify-center  rounded-xl  w-[110px] h-[100px]">
+                            <img src="images/product-3.png" alt="images"
+                                class="absolute bottom-0 w-[80px]  transform hover:scale-105 transition duration-1000 ease-in-out">
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="font-semibold text-[#2F2F2F]">كرسي مريح</h2>
+                        <p class="text-[14px] text-[#6A6A6A]">حسّن وضعية جلوسك وإنتاجيتك مع تشكيلتنا من الكراسي المريحة
+                            الكرسي المريح.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <!-- chaires section -->
+    <section class="mb-20 min-[375px]:mt-36">
+        <section class="wrapper">
+            <div class="grid grid-cols-1 gap-10 md:grid-cols-2  min-[1150px]:grid-cols-3 justify-between">
+                <!-- Modern Chair -->
+                <div
+                    class="flex max-[375px]:flex-col max-[375px]:items-center  max-[375px]:text-center items-start gap-5 col-span-1">
+                    <div>
+                     <div
+                            class="my-10 min-[375px]:mt-0   flex justify-center  rounded-xl  w-[110px] h-[100px]">
+                            <img src="./images/chair1.webp" alt="images"
+                                class="absolute bottom- w-[120px] -mt-6 ml-3 transform hover:scale-105 transition duration-1000 ease-in-out">
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="font-semibold text-[#2F2F2F]">كرسي جديد</h2>
+                        <p class="text-[14px] text-[#6A6A6A]">مجموعه جديده من الكراسي المريحه والجيده ولونهم ابيض</p>
+                    </div>
+                </div>
+                <!-- Kruzi Aero -->
+                <div
+                    class="flex max-[375px]:flex-col max-[375px]:items-center  max-[375px]:text-center items-start gap-5 col-span-1">
+                    <div>
+                        <div
+                            class="my-10 min-[375px]:mt-0   flex justify-center  rounded-xl  w-[110px] h-[100px]">
+                            <img src="./images/chair2.webp" alt="images"
+                                class="absolute bottom- w-[120px] -mt-6 ml-3 transform hover:scale-105 transition duration-1000 ease-in-out">
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="font-semibold text-[#2F2F2F]">كرسي حديث </h2>
+                        <p class="text-[14px] text-[#6A6A6A]">كرسي حديث وستستمتع 
+                            بالراحه
+                        </p>
+                    </div>
+                </div>
+                <!-- Ergonomic Chair -->
+                <div
+                    class="flex max-[375px]:flex-col max-[375px]:items-center max-[375px]:text-center items-start gap-5 col-span-1">
+                    <div>
+                       <div
+                            class="my-10 min-[375px]:mt-0   flex justify-center  rounded-xl  w-[110px] h-[100px]">
+                            <img src="./images/chair3.jpg" alt="images"
+                                class="absolute bottom- w-[120px] -mt-6 ml-3 transform hover:scale-105 transition duration-1000 ease-in-out">
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="font-semibold text-[#2F2F2F]">كرسي لطيف</h2>
+                        <p class="text-[14px] text-[#6A6A6A]">حسّن وضعية جلوسك وإنتاجيتك مع تشكيلتنا من الكراسي المريح والجديده</p>                    </div>
+                </div>
+
+            </div>
+        </section>
+    </section>
+</body>
+</html>

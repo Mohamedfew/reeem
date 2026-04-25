@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>صفحه إنشاء حساب </title>
+  <link rel="stylesheet" href="styles/styles.css">
+  <link rel="stylesheet" href="styles/register.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div class="register-container">
+  <h2>إنشاء حساب</h2>
+
+  <form id="registerForm">
+    <input type="text" id="name" placeholder="الاسم الكامل" required>
+
+    <input type="date" id="dob" required>
+
+    <input type="email" id="email" placeholder="عنوان البريد الإلكتروني" required>
+
+    <input type="password" id="password" placeholder="كلمة المرور" required>
+
+    <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور" required>
+
+    <button type="submit">إنشاء حساب</button>
+  </form>
+
+  <p  style="color: #606060;"  class="login-link">
+   هل لديك حساب بالفعل؟ <a href="login.html">تسجيل دخول</a>
+  </p>
+</div>
+
+<script src="js/register.js"></script>
+</body>
+</html>

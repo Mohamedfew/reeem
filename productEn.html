@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Palace | Premium Furniture</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <style>
+        :root {
+            --primary: #3b7369; 
+            --accent: #d4a373;  
+            --bg: #f8faf9;     
+            --card: #ffffff;    
+            --text: #2f2f2f;    
+        }
+
+        [data-theme="dark"] {
+            --bg: #1a1a1a; --card: #2d2d2d; --text: #eee; --primary: #d4a373; --accent: #fff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); transition: 0.3s; overflow-x: hidden; scroll-behavior: smooth; }
+
+        #toast {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: #fff; border-bottom: 4px solid var(--primary);
+            padding: 15px 30px; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            display: none; z-index: 9999; animation: fadeInDown 0.5s; font-weight: bold;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95); padding: 15px 8%; display: flex;
+            justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); backdrop-filter: blur(10px);
+        }
+
+        .logo { font-size: 1.8rem; font-weight: 900; color: var(--primary); }
+
+        .nav-buttons { display: flex; align-items: center; gap: 10px; }
+        
+        .btn-nav { background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 12px; cursor: pointer; font-weight: bold; transition: 0.3s; display: flex; align-items: center; gap: 5px; }
+        .btn-fav { background: #ff4757; }
+
+        .hero-banner {
+            height: 400px; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000');
+            background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center;
+            text-align: center; color: white;
+        }
+
+        .hero-content h1 { font-size: 3.5rem; margin-bottom: 10px; }
+
+        .controls-container { padding: 30px 8% 10px; display: flex; gap: 15px; flex-wrap: wrap; }
+        #searchBar { flex: 1; padding: 15px; border-radius: 12px; border: 2px solid #eee; outline: none; }
+        .sort-btn { padding: 10px 20px; border-radius: 12px; border: 2px solid var(--accent); background: none; color: var(--accent); cursor: pointer; font-weight: bold; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 35px; padding: 20px 8%; }
+        .card { background: var(--card); border-radius: 25px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.02); position: relative; }
+        .img-box { height: 320px; cursor: pointer; overflow: hidden; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        .card:hover img { transform: scale(1.1); }
+
+        .wishlist-heart { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; cursor: pointer; z-index: 5; background: white; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.3s; color: #ccc; }
+        .wishlist-heart.active { color: #ff4757; transform: scale(1.2); }
+
+        .card-info { padding: 20px; text-align: center; }
+        .price { color: var(--primary); font-weight: bold; font-size: 1.4rem; margin: 10px 0; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(8px); }
+        .m-content { background: var(--card); width: 100%; max-width: 900px; max-height: 90vh; border-radius: 30px; display: flex; flex-direction: column; overflow-y: auto; position: relative; }
+        .m-body { display: flex; flex-wrap: wrap; }
+        .modal-gallery { flex: 1.2; min-width: 300px; height: 400px; }
+        .modal-gallery img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-info { flex: 1; min-width: 300px; padding: 40px; }
+
+        .comment-item { border-bottom: 1px solid #eee; padding: 12px 0; font-size: 0.9rem; }
+        .comment-item b { color: var(--primary); display: block; margin-bottom: 4px; }
+
+        #cartItems, #favItems { max-height: 300px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<header>
+    <div class="logo">Luxury Palace</div>
+    <div class="nav-buttons">
+        <span onclick="toggleTheme()" style="cursor:pointer; font-size:1.5rem;">🌓</span>
+        <button class="btn-nav btn-fav" onclick="toggleM('favModal')">❤️ Wishlist (<span id="favCount">0</span>)</button>
+        <button class="btn-nav" onclick="toggleM('cartModal')">🛒 Cart (<span id="count">0</span>)</button>
+    </div>
+</header>
+
+<section class="hero-banner">
+    <div class="hero-content">
+        <h1 class="animate__animated animate__fadeInDown">Creative Modern Design</h1>
+        <p class="animate__animated animate__fadeInUp animate__delay-1s">Furniture that fits the luxury of your home</p>
+    </div>
+</section>
+
+<div class="controls-container">
+    <input type="text" id="searchBar" placeholder="What are you looking for?" onkeyup="search()">
+    <button class="sort-btn" onclick="sortProducts('asc')">⬆️ Price: Low to High</button>
+    <button class="sort-btn" onclick="sortProducts('desc')">⬇️ Price: High to Low</button>
+</div>
+
+<div class="grid" id="mainGrid"></div>
+
+<div id="detModal" class="modal">
+    <div class="m-content animate__animated animate__zoomIn">
+        <span style="position: absolute; top: 15px; right: 15px; cursor: pointer; font-size: 2rem; z-index: 100; color: #333;" onclick="toggleM('detModal')">&times;</span>
+        <div class="m-body">
+            <div class="modal-gallery">
+                <img id="detImg" src="">
+            </div>
+            <div class="modal-info">
+                <h2 id="detName" style="color: var(--primary);"></h2>
+                <div style="color: #f1c40f; margin: 10px 0;">⭐⭐⭐⭐⭐ (4.9)</div>
+                <div class="price" id="detPrice" style="font-size: 2rem; border-bottom: 2px solid var(--bg); padding-bottom: 15px;"></div>
+                
+                <h4 style="margin-top: 20px;">Reviews & Comments</h4>
+                <div id="commList"></div>
+                
+                <button class="btn-nav" id="detAddBtn" style="width: 100%; margin-top: 25px; padding: 15px; justify-content: center;">Add to Cart 🛒</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="cartModal" class="modal">
+    <div class="m-content" style="max-width: 450px; padding: 30px; height: auto;">
+        <h3>🛍️ Shopping Cart</h3>
+        <div id="cartItems" style="margin: 20px 0;"></div>
+        <h3 style="margin-bottom: 20px;">Total: <span id="total">0</span> EGP</h3>
+        <button class="btn-nav" style="width: 100%; justify-content: center;" onclick="openPay()">Checkout</button>
+        <button onclick="toggleM('cartModal')" style="width: 100%; background:none; border:none; margin-top:10px; cursor:pointer;">Close</button>
+    </div>
+</div>
+
+<div id="favModal" class="modal">
+    <div class="m-content" style="max-width: 450px; padding: 30px; height: auto;">
+        <h3>❤️ My Wishlist</h3>
+        <div id="favItems" style="margin: 20px 0;"></div>
+        <button onclick="toggleM('favModal')" class="btn-nav" style="width: 100%; justify-content: center;">Back to Shopping</button>
+    </div>
+</div>
+
+<div id="payModal" class="modal">
+    <div class="m-content" style="max-width: 450px; padding: 30px; height: auto;">
+        <div id="payForm">
+            <h3>💳 Secure Payment</h3>
+            <input type="text" placeholder="Full Name" style="width:100%; padding:12px; margin: 15px 0 10px; border-radius:10px; border:1px solid #ddd;">
+            <input type="text" id="uCard" placeholder="Card Number (16 digits)" maxlength="16" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+            <div style="display:flex; gap:10px;">
+                <input type="text" placeholder="MM/YY" maxlength="5" style="flex:1; padding:12px; border-radius:10px; border:1px solid #ddd;">
+                <input type="password" id="uCvv" placeholder="CVV" maxlength="3" style="flex:1; padding:12px; border-radius:10px; border:1px solid #ddd;">
+            </div>
+            <button class="btn-nav" style="width: 100%; margin-top: 15px; justify-content: center;" onclick="finish()">Confirm Payment</button>
+        </div>
+        <div id="success" style="display:none; text-align:center;">
+            <h1 style="color: var(--primary); font-size: 4rem;">✅</h1>
+            <h2>Successful!</h2>
+            <button class="btn-nav" style="margin-top:20px; width:100%; justify-content:center;" onclick="location.reload()">Back to Store</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let products = [];
+    let cart = [];
+    let wishlist = [];
+    
+    // English names for comments
+    const englishNames = ["John Doe", "Alex Smith", "Sarah Wilson", "James Miller", "Emma Brown", "David Clark", "Olivia White", "Ryan Evans"];
+    const commentsTexts = ["Excellent quality", "Very fast delivery", "Looks even better in person", "Truly amazing, worth it", "Thank you for the great taste", "Very professional service", "Great packaging", "World-class design"];
+
+    const pData = [
+        {name: "New Classic Sofa Set", price: 19500, img: "https://images.unsplash.com/photo-1550581190-9c1c48d21d6c?w=800"},
+        {name: "Beech Wood Corner Table", price: 2800, img: "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=800"},
+        {name: "Velvet Dining Chair", price: 1800, img: "https://images.unsplash.com/photo-1592078615290-033ee584e267?w=800"},
+        {name: "Modern Study Desk", price: 4500, img: "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=800"},
+        {name: "Crystal Lighting Unit", price: 3200, img: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=800"},
+        {name: "3-Door Wardrobe", price: 11200, img: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800"},
+        {name: "Dining Room Buffet", price: 7400, img: "https://images.unsplash.com/photo-1532372320572-cda25653a26d?w=800"},
+        {name: "Golden Bar Chair Set", price: 3900, img: "https://images.unsplash.com/photo-1503602642458-232111445657?w=800"},
+        {name: "Grey Sofa Bed", price: 6800, img: "https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=800"},
+        {name: "Royal Velvet Sofa", price: 12500, img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"},
+        {name: "Emerald Lounge Chair", price: 3200, img: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800"},
+        {name: "Golden Light Unit", price: 1450, img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800"},
+        {name: "Scandinavian Coffee Table", price: 2100, img: "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=800"},
+        {name: "Modern Wall Library", price: 4200, img: "https://images.unsplash.com/photo-1594620302200-9a762244a156?w=800"},
+        {name: "Italian Leather Couch", price: 18000, img: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800"},
+        {name: "Natural Wood Shelves", price: 950, img: "https://images.unsplash.com/photo-1506898667547-42e22a46e125?w=800"},
+        {name: "Elegant Side Table", price: 1100, img: "https://images.unsplash.com/photo-1532372320572-cda25653a26d?w=800"},
+        {name: "Dining Chair Set", price: 6400, img: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?w=800"},
+        {name: "Spacious Corner Sofa", price: 13200, img: "https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=800"},
+        {name: "Modern Crystal Chandelier", price: 3500, img: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=800"},
+        {name: "Smart Wardrobe", price: 9800, img: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800"},
+        {name: "Kids Study Table", price: 2400, img: "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=800"},
+        {name: "Comfortable Bean Bag", price: 1600, img: "https://images.unsplash.com/photo-1592078615290-033ee584e267?w=800"},
+        {name: "Outdoor Garden Set", price: 5700, img: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800"},
+        {name: "Golden Frame Mirror", price: 1850, img: "https://images.unsplash.com/photo-1618220179428-22790b461013?w=800"},
+        {name: "Bedroom Dressing Table", price: 2900, img: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800"}
+    ];
+
+    function init() {
+        pData.forEach((p, i) => products.push({ ...p, id: i }));
+        render(products);
+        ScrollReveal().reveal('.card', { delay: 200, distance: '50px', origin: 'bottom', interval: 80 });
+    }
+
+    function render(arr) {
+        document.getElementById('mainGrid').innerHTML = arr.map(p => `
+            <div class="card">
+                <div class="wishlist-heart ${wishlist.some(f=>f.id===p.id)?'active':''}" onclick="toggleWishlist(${p.id}, this)">❤</div>
+                <div class="img-box" onclick="showDet(${p.id})"><img src="${p.img}"></div>
+                <div class="card-info">
+                    <h3>${p.name}</h3>
+                    <div class="price">${p.price} EGP</div>
+                    <button class="btn-nav" style="width:100%; justify-content:center;" onclick="add(${p.id})">Add to Cart 🛒</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function toggleWishlist(id, el) {
+        const prod = products.find(p => p.id === id);
+        const index = wishlist.findIndex(p => p.id === id);
+        
+        if(index === -1) {
+            wishlist.push(prod);
+            el.classList.add('active');
+            showToast("❤️ Added to Wishlist");
+        } else {
+            wishlist.splice(index, 1);
+            el.classList.remove('active');
+            showToast("💔 Removed from Wishlist");
+        }
+        document.getElementById('favCount').innerText = wishlist.length;
+        updateFavs();
+    }
+
+    function updateFavs() {
+        document.getElementById('favItems').innerHTML = wishlist.map(p => `
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px; background:#f9f9f9; padding:10px; border-radius:10px;">
+                <img src="${p.img}" width="50" height="50" style="object-fit:cover; border-radius:5px;">
+                <div style="flex:1"><b>${p.name}</b><br><small>${p.price} EGP</small></div>
+                <button onclick="add(${p.id})" style="border:none; background:var(--primary); color:white; padding:5px 10px; border-radius:5px; cursor:pointer;">🛒</button>
+            </div>
+        `).join('') || "Your wishlist is empty";
+    }
+
+    function showDet(id) {
+        const p = products.find(prod => prod.id === id);
+        document.getElementById('detName').innerText = p.name;
+        document.getElementById('detPrice').innerText = p.price + " EGP";
+        document.getElementById('detImg').src = p.img;
+        
+        document.getElementById('commList').innerHTML = englishNames.map((name, i) => `
+            <div class="comment-item"><b>${name}</b><p>${commentsTexts[i]}</p></div>
+        `).join('');
+
+        document.getElementById('detAddBtn').onclick = () => { add(id); toggleM('detModal'); };
+        toggleM('detModal');
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.style.display = 'block';
+        setTimeout(() => t.style.display = 'none', 2500);
+    }
+
+    function add(id) {
+        cart.push(products.find(p => p.id === id));
+        document.getElementById('count').innerText = cart.length;
+        showToast("✅ Added to Cart");
+        updateCart();
+    }
+
+    function updateCart() {
+        let s = 0;
+        document.getElementById('cartItems').innerHTML = cart.map(item => {
+            s += item.price;
+            return `<div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>${item.name}</span><b>${item.price}</b></div>`;
+        }).join('');
+        document.getElementById('total').innerText = s;
+    }
+
+    function toggleM(id) {
+        const m = document.getElementById(id);
+        m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function openPay() { toggleM('cartModal'); toggleM('payModal'); }
+    function finish() {
+        if(document.getElementById('uCard').value.length < 16) return alert('Invalid card number');
+        document.getElementById('payForm').style.display = 'none';
+        document.getElementById('success').style.display = 'block';
+    }
+
+    function sortProducts(type) {
+        let sorted = [...products].sort((a, b) => type === 'asc' ? a.price - b.price : b.price - a.price);
+        render(sorted);
+    }
+
+    function search() {
+        const v = document.getElementById('searchBar').value.toLowerCase();
+        render(products.filter(p => p.name.toLowerCase().includes(v)));
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        body.getAttribute('data-theme') === 'dark' ? body.removeAttribute('data-theme') : body.setAttribute('data-theme', 'dark');
+    }
+
+    window.onload = init;
+</script>
+</body>
+</html>

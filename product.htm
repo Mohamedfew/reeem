@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قصر الفخامة | للأثاث الراقي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <style>
+        :root {
+            /* الألوان الأصلية الفخمة */
+            --primary: #3b7369; 
+            --accent: #d4a373;  
+            --bg: #f8faf9;     
+            --card: #ffffff;    
+            --text: #2f2f2f;    
+        }
+
+        [data-theme="dark"] {
+            --bg: #1a1a1a; --card: #2d2d2d; --text: #eee; --primary: #d4a373; --accent: #fff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); transition: 0.3s; overflow-x: hidden; scroll-behavior: smooth; }
+
+        /* التنبيهات */
+        #toast {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: #fff; border-bottom: 4px solid var(--primary);
+            padding: 15px 30px; border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            display: none; z-index: 9999; animation: fadeInDown 0.5s; font-weight: bold;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95); padding: 15px 8%; display: flex;
+            justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); backdrop-filter: blur(10px);
+        }
+
+        .logo { font-size: 1.8rem; font-weight: 900; color: var(--primary); }
+
+        .nav-buttons { display: flex; align-items: center; gap: 10px; }
+        
+        /* أزرار السلة والمفضلة */
+        .btn-nav { background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 12px; cursor: pointer; font-weight: bold; transition: 0.3s; display: flex; align-items: center; gap: 5px; }
+        .btn-fav { background: #ff4757; }
+
+        /* Hero Banner */
+        .hero-banner {
+            height: 400px; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000');
+            background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center;
+            text-align: center; color: white;
+        }
+
+        .hero-content h1 { font-size: 3.5rem; margin-bottom: 10px; }
+
+        .controls-container { padding: 30px 8% 10px; display: flex; gap: 15px; flex-wrap: wrap; }
+        #searchBar { flex: 1; padding: 15px; border-radius: 12px; border: 2px solid #eee; outline: none; }
+        .sort-btn { padding: 10px 20px; border-radius: 12px; border: 2px solid var(--accent); background: none; color: var(--accent); cursor: pointer; font-weight: bold; }
+
+        /* Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 35px; padding: 20px 8%; }
+        .card { background: var(--card); border-radius: 25px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.02); position: relative; }
+        .img-box { height: 320px; cursor: pointer; overflow: hidden; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        .card:hover img { transform: scale(1.1); }
+
+        /* نظام القلب المحسن */
+        .wishlist-heart { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; cursor: pointer; z-index: 5; background: white; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.3s; color: #ccc; }
+        .wishlist-heart.active { color: #ff4757; transform: scale(1.2); }
+
+        .card-info { padding: 20px; text-align: center; }
+        .price { color: var(--primary); font-weight: bold; font-size: 1.4rem; margin: 10px 0; }
+
+        /* Modal السكرول */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 5000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(8px); }
+        .m-content { background: var(--card); width: 100%; max-width: 900px; max-height: 90vh; border-radius: 30px; display: flex; flex-direction: column; overflow-y: auto; position: relative; }
+        .m-body { display: flex; flex-wrap: wrap; }
+        .modal-gallery { flex: 1.2; min-width: 300px; height: 400px; }
+        .modal-gallery img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-info { flex: 1; min-width: 300px; padding: 40px; }
+
+        .comment-item { border-bottom: 1px solid #eee; padding: 12px 0; font-size: 0.9rem; }
+        .comment-item b { color: var(--primary); display: block; margin-bottom: 4px; }
+
+        #cartItems, #favItems { max-height: 300px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<header>
+    <div class="logo" > قصر الفخامة </div>
+    <div class="nav-buttons">
+        <span onclick="toggleTheme()" style="cursor:pointer; font-size:1.5rem;">🌓</span>
+        <button class="btn-nav btn-fav" onclick="toggleM('favModal')">❤️ المفضلة (<span id="favCount">0</span>)</button>
+        <button class="btn-nav" onclick="toggleM('cartModal')">🛒 السلة (<span id="count">0</span>)</button>
+    </div>
+</header>
+
+<section class="hero-banner">
+    <div class="hero-content">
+        <h1 class="animate__animated animate__fadeInDown">إبداع التصميم العصري</h1>
+        <p class="animate__animated animate__fadeInUp animate__delay-1s">أثاث يليق بفخامة منزلك</p>
+    </div>
+</section>
+
+<div class="controls-container">
+    <input type="text" id="searchBar" placeholder="عن ماذا تبحث؟" onkeyup="search()">
+    <button class="sort-btn" onclick="sortProducts('asc')">⬆️ الأقل سعراً</button>
+    <button class="sort-btn" onclick="sortProducts('desc')">⬇️ الأعلى سعراً</button>
+</div>
+
+<div class="grid" id="mainGrid"></div>
+
+<div id="detModal" class="modal">
+    <div class="m-content animate__animated animate__zoomIn">
+        <span style="position: sticky; top: 15px; right: 15px; cursor: pointer; font-size: 2rem; z-index: 100; color: #333;" onclick="toggleM('detModal')">&times;</span>
+        <div class="m-body">
+            <div class="modal-gallery">
+                <img id="detImg" src="">
+            </div>
+            <div class="modal-info">
+                <h2 id="detName" style="color: var(--primary);"></h2>
+                <div style="color: #f1c40f; margin: 10px 0;">⭐⭐⭐⭐⭐ (4.9)</div>
+                <div class="price" id="detPrice" style="font-size: 2rem; border-bottom: 2px solid var(--bg); padding-bottom: 15px;"></div>
+                
+                <h4 style="margin-top: 20px;">التعليقات والمراجعات</h4>
+                <div id="commList"></div>
+                
+                <button class="btn-nav" id="detAddBtn" style="width: 100%; margin-top: 25px; padding: 15px; justify-content: center;">إضافة للسلة 🛒</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="cartModal" class="modal">
+    <div class="m-content" style="max-width: 450px; padding: 30px; height: auto;">
+        <h3>🛍️ سلة المشتريات</h3>
+        <div id="cartItems" style="margin: 20px 0;"></div>
+        <h3 style="margin-bottom: 20px;">الإجمالي: <span id="total">0</span> ج.م</h3>
+        <button class="btn-nav" style="width: 100%; justify-content: center;" onclick="openPay()">إتمام الدفع</button>
+        <button onclick="toggleM('cartModal')" style="width: 100%; background:none; border:none; margin-top:10px; cursor:pointer;">إغلاق</button>
+    </div>
+</div>
+
+<div id="favModal" class="modal">
+    <div class="m-content" style="max-width: 450px; padding: 30px; height: auto;">
+        <h3>❤️ قائمة المفضلة</h3>
+        <div id="favItems" style="margin: 20px 0;"></div>
+        <button onclick="toggleM('favModal')" class="btn-nav" style="width: 100%; justify-content: center;">العودة للتسوق</button>
+    </div>
+</div>
+
+<div id="payModal" class="modal">
+    <div class="m-content" style="max-width: 450px; padding: 30px; height: auto;">
+        <div id="payForm">
+            <h3>💳 الدفع الآمن</h3>
+            <input type="text" placeholder="الاسم الكامل" style="width:100%; padding:12px; margin: 15px 0 10px; border-radius:10px; border:1px solid #ddd;">
+            <input type="text" id="uCard" placeholder="رقم الفيزا (16 رقم)" maxlength="16" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+            <div style="display:flex; gap:10px;">
+                <input type="text" placeholder="MM/YY" maxlength="5" style="flex:1; padding:12px; border-radius:10px; border:1px solid #ddd;">
+                <input type="password" id="uCvv" placeholder="CVV" maxlength="3" style="flex:1; padding:12px; border-radius:10px; border:1px solid #ddd;">
+            </div>
+            <button class="btn-nav" style="width: 100%; margin-top: 15px; justify-content: center;" onclick="finish()">تأكيد عملية الدفع</button>
+        </div>
+        <div id="success" style="display:none; text-align:center;">
+            <h1 style="color: var(--primary); font-size: 4rem;">✅</h1>
+            <h2>تم بنجاح!</h2>
+            <button class="btn-nav" style="margin-top:20px; width:100%; justify-content:center;" onclick="location.reload()">العودة للمتجر</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let products = [];
+    let cart = [];
+    let wishlist = [];
+    
+    // أسماء مصرية عشوائية للتعليقات
+    const egyptianNames = ["محمد عزت", "أحمد إبراهيم", "سارة محمود", "ياسين فوزي", "نورهان علي", "محمود رمضان", "ليلى حسن", "كريم المنشاوي"];
+    const commentsTexts = ["خامة ممتازة جداً", "التوصيل كان سريع", "الشكل في الحقيقة أحلى", "بجد تحفة وتستاهل", "شكراً ليكم على الذوق", "التعامل محترم جداً", "تغليف المنتج ممتاز", "تصميم عالمي"];
+
+    const pData = [
+        
+    {name: "طقم كنب نيو كلاسيك", price: 19500, img: "https://images.unsplash.com/photo-1550581190-9c1c48d21d6c?w=800"},
+    {name: "ترابيزة ركنة خشب زان", price: 2800, img: "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=800"},
+    {name: "كرسي سفرة مخمل", price: 1800, img: "https://images.unsplash.com/photo-1592078615290-033ee584e267?w=800"},
+    {name: "مكتب دراسة مودرن", price: 4500, img: "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=800"},
+    {name: "وحدة إضاءة كريستال", price: 3200, img: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=800"},
+    {name: "دولاب ملابس 3 ضلفة", price: 11200, img: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800"},
+    {name: "بوفيه غرفة سفرة", price: 7400, img: "https://images.unsplash.com/photo-1532372320572-cda25653a26d?w=800"},
+    {name: "طقم كراسي بار ذهبي", price: 3900, img: "https://images.unsplash.com/photo-1503602642458-232111445657?w=800"},
+    {name: "أريكة سرير رمادية", price: 6800, img: "https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=800"},
+        {name: "أريكة مخملية ملكية", price: 12500, img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800"},
+        {name: "كرسي استرخاء زمردي", price: 3200, img: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800"},
+        {name: "وحدة إضاءة ذهبية", price: 1450, img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800"},
+        {name: "طاولة قهوة اسكندنافية", price: 2100, img: "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=800"},
+        {name: "مكتبة جدارية مودرن", price: 4200, img: "https://images.unsplash.com/photo-1594620302200-9a762244a156?w=800"},
+        {name: "كنبة جلدية إيطالية", price: 18000, img: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800"},
+        {name: "رفوف خشب طبيعي", price: 950, img: "https://images.unsplash.com/photo-1506898667547-42e22a46e125?w=800"},
+        {name: "طاولة جانبية أنيقة", price: 1100, img: "https://images.unsplash.com/photo-1532372320572-cda25653a26d?w=800"},
+        {name: "طقم كراسي سفرة", price: 6400, img: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?w=800"},
+        {name: "أريكة زاوية رحبة", price: 13200, img: "https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=800"},
+        {name: "ثريا كريستال حديثة", price: 3500, img: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=800"},
+        {name: "دولاب ملابس ذكي", price: 9800, img: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800"},
+        {name: "طاولة دراسة أطفال", price: 2400, img: "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=800"},
+        {name: "بين باج مريح", price: 1600, img: "https://images.unsplash.com/photo-1592078615290-033ee584e267?w=800"},
+        {name: "طقم حديقة خارجي", price: 5700, img: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800"},
+        {name: "مرآة بإطار ذهبي", price: 1850, img: "https://images.unsplash.com/photo-1618220179428-22790b461013?w=800"},
+        {name: "تسريحة غرفة نوم", price: 2900, img: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800"}
+    ];
+
+    function init() {
+        pData.forEach((p, i) => products.push({ ...p, id: i }));
+        render(products);
+        ScrollReveal().reveal('.card', { delay: 200, distance: '50px', origin: 'bottom', interval: 80 });
+    }
+
+    function render(arr) {
+        document.getElementById('mainGrid').innerHTML = arr.map(p => `
+            <div class="card">
+                <div class="wishlist-heart ${wishlist.some(f=>f.id===p.id)?'active':''}" onclick="toggleWishlist(${p.id}, this)">❤</div>
+                <div class="img-box" onclick="showDet(${p.id})"><img src="${p.img}"></div>
+                <div class="card-info">
+                    <h3>${p.name}</h3>
+                    <div class="price">${p.price} ج.م</div>
+                    <button class="btn-nav" style="width:100%; justify-content:center;" onclick="add(${p.id})">إضافة للسلة 🛒</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function toggleWishlist(id, el) {
+        const prod = products.find(p => p.id === id);
+        const index = wishlist.findIndex(p => p.id === id);
+        
+        if(index === -1) {
+            wishlist.push(prod);
+            el.classList.add('active');
+            showToast("❤️ تم الإضافة للمفضلة");
+        } else {
+            wishlist.splice(index, 1);
+            el.classList.remove('active');
+            showToast("💔 تم الإزالة من المفضلة");
+        }
+        document.getElementById('favCount').innerText = wishlist.length;
+        updateFavs();
+    }
+
+    function updateFavs() {
+        document.getElementById('favItems').innerHTML = wishlist.map(p => `
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px; background:#f9f9f9; padding:10px; border-radius:10px;">
+                <img src="${p.img}" width="50" height="50" style="object-fit:cover; border-radius:5px;">
+                <div style="flex:1"><b>${p.name}</b><br><small>${p.price} ج.م</small></div>
+                <button onclick="add(${p.id})" style="border:none; background:var(--primary); color:white; padding:5px 10px; border-radius:5px; cursor:pointer;">🛒</button>
+            </div>
+        `).join('') || "قائمة المفضلة فارغة";
+    }
+
+    function showDet(id) {
+        const p = products.find(prod => prod.id === id);
+        document.getElementById('detName').innerText = p.name;
+        document.getElementById('detPrice').innerText = p.price + " ج.م";
+        document.getElementById('detImg').src = p.img;
+        
+        document.getElementById('commList').innerHTML = egyptianNames.map((name, i) => `
+            <div class="comment-item"><b>${name}</b><p>${commentsTexts[i]}</p></div>
+        `).join('');
+
+        document.getElementById('detAddBtn').onclick = () => { add(id); toggleM('detModal'); };
+        toggleM('detModal');
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.style.display = 'block';
+        setTimeout(() => t.style.display = 'none', 2500);
+    }
+
+    function add(id) {
+        cart.push(products.find(p => p.id === id));
+        document.getElementById('count').innerText = cart.length;
+        showToast("✅ تمت الإضافة للسلة");
+        updateCart();
+    }
+
+    function updateCart() {
+        let s = 0;
+        document.getElementById('cartItems').innerHTML = cart.map(item => {
+            s += item.price;
+            return `<div style="display:flex; justify-content:space-between; margin-bottom:10px;"><span>${item.name}</span><b>${item.price}</b></div>`;
+        }).join('');
+        document.getElementById('total').innerText = s;
+    }
+
+    function toggleM(id) {
+        const m = document.getElementById(id);
+        m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function openPay() { toggleM('cartModal'); toggleM('payModal'); }
+    function finish() {
+        if(document.getElementById('uCard').value.length < 16) return alert('خطأ في رقم الفيزا');
+        document.getElementById('payForm').style.display = 'none';
+        document.getElementById('success').style.display = 'block';
+    }
+
+    function sortProducts(type) {
+        let sorted = [...products].sort((a, b) => type === 'asc' ? a.price - b.price : b.price - a.price);
+        render(sorted);
+    }
+
+    function search() {
+        const v = document.getElementById('searchBar').value.toLowerCase();
+        render(products.filter(p => p.name.toLowerCase().includes(v)));
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        body.getAttribute('data-theme') === 'dark' ? body.removeAttribute('data-theme') : body.setAttribute('data-theme', 'dark');
+    }
+
+    window.onload = init;
+</script>
+</body>
+</html>
